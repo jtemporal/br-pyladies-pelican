@@ -1,1 +1,1 @@
-web: python -m pelican.server $PORT
+web: pelican content -o output -s pelicanconf.py && cd output&& python -m pelican.server $PORT
