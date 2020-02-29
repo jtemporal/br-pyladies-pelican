@@ -30,9 +30,7 @@ Obs.: Nós usamos inglês como linguagem padrão dos commits (:
 
 Preparando o ambiente local
 --------------------------
-- Antes de mais nada, verifique se você tem o **Python 2.7** instalado na sua maquina.
-- Se você não possui, instale a ferramenta [virtualenv](https://virtualenv.pypa.io/),
-  que permite a criação de ambientes virtuais em Python.
+- Antes de mais nada, verifique se você tem o **Python 3.6.4** instalado na sua máquina.
 
 (Atenção: se você estiver usando um **MacOS X** para desenvolver, você provavelmente precisará exportar algumas variáveis locale do Python. Siga esse link: [Fix unknown locale](http://patrick.arminio.info/fix-valueerror-unknown-locale-utf8/))
 
@@ -80,16 +78,31 @@ Se tudo deu certo, sua página já estará disponível em `/slug-pagina/`.
 Adicionar Eventos
 -----------------
 
-Para adicionar novos eventos, basta editar o arquivo `data/events.yml` . Ele possui o seguinte formato:
+Existem duas formas de incluir eventos no site, manualmente e através de um evento no Facebook.
+
+Para adicionar novos eventos manualmente, basta editar o arquivo `data/events.yml`. Ele possui o seguinte formato:
 
 ```yaml
 - url: URL DO SEU EVENTO
   name: NOME DO EVENTO
   date: DATA EVENTO (Formato DD-MM-YYYY)
   local: LOCAL EVENTO
+  facebook_id: ID DO EVENTO NO FACEBOOK (se houver)
 ```
 
 Caso o evento seja novo, ele será automaticamente inserido em Novos Eventos. Caso contrário, já ficará na lista de Eventos passados.
+
+É possível também importar os eventos do Facebook de páginas de grupos PyLadies espalhados pelo Brasil, para isso, primeiramente verifique se o ID do Facebook da página do seu grupo (aquele que aparece na URL quando acessado) se encontra na listagem de grupos em `utils/__init__.py`.
+
+O próximo passo é obter um token de acesso do Facebook para o seu usuário. Você pode facilmente obte-lo no link https://developers.facebook.com/tools/explorer e copiando o campo "Token de acesso". Não compartilhe seu token de usuário com outras pessoas.
+
+Em seguida, abra uma linha de comando e atribua seu token a uma variável de ambiente com o comando (não esqueça as aspas):
+
+    export FACEBOOK_TOKEN="{seu-token}"
+
+Agora é só rodar o comando abaixo, lembrando que o conteúdo gerado é estático, ou seja, para atualizá-lo é necessário re-executar o comando:
+
+    make load-facebook-events
 
 
 Adicionar Ladies
@@ -115,6 +128,8 @@ O endereço da foto em nosso projeto.
 *Exemplo:* `/images/ladies/nomedalady.jpg`
 
 Nesse caso, a nova imagem deverá ser inserida no diretório `content/images/ladies`
+
+**Atenção:** A imagem precisa ser `100px por 100px`.
 
 #### Path absoluto
 
@@ -143,7 +158,7 @@ Para adicionar uma nova localização de grupo de pyladies, edite o arquivo `dat
 Adicionar vídeos
 ----------------
 
-Para adicionar um novo vídeo, edite o arquivo `data/videos.yml` com o nome do vídeo e seu link. Ele possui o seguinte formato:
+Para adicionar um novo vídeo verifique qual categoria o vídeo irá se encaixar: Depoimentos, Dojos, Palestras ou Tutoriais, edite o arquivo correspondente a categoria que você escolheu `data/videos_depo.yml`,`data/videos_dojos.yml`,`data/videos_talks.yml` ou `data/videos_tutorials.yml` com o nome do vídeo e seu link. Ele possui o seguinte formato:
 
 ```yaml
 - # Nome do Vídeo
@@ -157,19 +172,22 @@ Para adicionar um novo vídeo, edite o arquivo `data/videos.yml` com o nome do v
 ![Exemplo](https://cloud.githubusercontent.com/assets/6595551/19491947/97e5df18-9553-11e6-9ed3-d1294f37a291.png "Comentário nos vídeos")
 
 
+Editar Layout
+-------------
+
+O site PyLadies utiliza um framework CSS chamado [Foundation](http://foundation.zurb.com/sites.html). Antes de escrever estilos para algo em particular, recomendamos verificar se o framework não oferece a funcionalidade ou estilo desejado, bastando que seja aplicada uma classe específica ao HTML.
+
+
 Atualizando o site
 ------------------
 
 Nós temos um ambiente de teste, também conhecido como staging \o/
-Todo commit feito no branch master deste repositório irá disparar a atualização do ambiente de staging.
+Todo commit feito no branch `develop` deste repositório irá disparar a atualização do ambiente de staging automaticamente.
+O deploy leva cerca de 3 minutos e acontece através da ferramenta de integração contínua [Codeship](https://app.codeship.com/projects/203211).
 
 __** Atenção: Sempre confira se as alterações no ambiente de staging se comportam como o esperado antes de atualizar o ambiente de produção **__
 
-Este projeto está com deploy automático para o ambiente de staging. Então, para verificar se as suas alterações já estão no ambiente de teste acesse o [Snap-CI](https://snap-ci.com/pyladies-brazil/br-pyladies-pelican/branch/master), que é a ferramenta de integração contínua que utilizamos neste projeto.
-
-![Exemplo](https://cloud.githubusercontent.com/assets/2524981/19616847/6cca90c4-97fd-11e6-988d-6297e18aa247.png)
-
-Depois que o texto da caixinha da penúltima coluna ficar verde, significa que as alterações já estarão disponíveis para teste. Para verificar se tudo funciona conforme o esperado, acesse [o ambiente de teste](http://staging-brasil-pyladies.herokuapp.com/). Depois de testar manualmente as suas alterações, basta informar a alguma das pessoas abaixo para que as alterações sejam aplicadas no ambiente de produção, também conhecido como [nosso site](http://brasil.pyladies.com/) \o//
+Para verificar se tudo funciona conforme o esperado, acesse [o ambiente de teste](http://staging-brasil-pyladies.herokuapp.com/). Depois de testar manualmente as suas alterações, basta informar a alguma das pessoas abaixo para que as alterações sejam aplicadas no ambiente de produção, também conhecido como [nosso site](http://brasil.pyladies.com/) \o//
 
 - [@aninhalacerda](https://github.com/aninhalacerda)
 - [@darlenedms](https://github.com/darlenedms)

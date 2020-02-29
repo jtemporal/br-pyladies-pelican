@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
-import os
 from datetime import datetime
 from collections import namedtuple
 
+import os
 import yaml
 
 AUTHOR = u'Pyladies'
 SITENAME = u'Pyladies Brasil'
-SITEURL = 'http://localhost:8000'
-TAGLINE = u'Ninguém pode fazer você se sentir inferior sem o seu consentimento (Eleanor Roosevelt)'
+SITEURL = 'http://localhost:{}'.format(os.getenv('PORT', '8000'))
+TAGLINE = (u'Ninguém pode fazer você se sentir inferior'
+           'sem o seu consentimento (Eleanor Roosevelt)')
 DEFAULT_DATE_FORMAT = ('%d-%m-%Y')
 DEFAULT_BG = 'images/pyladies-brasil-logo.png'
 SINCE = datetime.now().year
@@ -52,12 +53,25 @@ MENUITEMS = (
 
 DEFAULT_PAGINATION = 10
 
-STATIC_PATHS = ['images', 'extra/robots.txt',
-                'extra/favicon.ico', 'extra/favicon.png']
+READERS = {'html': None}
+
+STATIC_PATHS = [
+    'images',
+    'extra/robots.txt',
+    'extra/favicon.ico',
+    'extra/favicon.png',
+    # Site estático da primeira edição do evento
+    'conf-1',
+    # Site estático da primeira edição da PyLadies Conf Nordeste
+    'conf-nordeste-1'
+]
+
 EXTRA_PATH_METADATA = {
     'extra/robots.txt': {'path': 'robots.txt'},
     'extra/favicon.ico': {'path': 'favicon.ico'},
-    'extra/favicon.png': {'path': 'favicon.png'}
+    'extra/favicon.png': {'path': 'favicon.png'},
+    'conf-1': {'path': 'conf-1'},
+    'conf-nordeste-1': {'path': 'conf-nordeste-1'},
 }
 
 # ANALYTICS
@@ -65,7 +79,7 @@ GOOGLE_ANALYTICS_UA = 'UA-58961512-1'
 
 DISQUS_SITENAME = 'pyladiesbrasil'
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+# RELATIVE_URLS = True
 
 
 # Ladies, Locations, Events and Videos
@@ -88,18 +102,46 @@ with open('data/locations.yml') as locations:
 with open('data/events.yml') as events:
     events_converted = yaml.load(events.read())
     EVENTS = []
-    PAST_EVENTS = []
+
+    # Convert dates to datetimes
     for event in events_converted:
-        # date as a datetime obj
         event['date'] = datetime.strptime(event['date'], '%d-%m-%Y').date()
+
+    # Sort events by date
+    for event in sorted(events_converted,
+                        key=lambda event: event['date'], reverse=True):
         e = namedtuple('Event', event.keys())(**event)
         EVENTS.append(e)
 
-with open('data/videos.yml') as videos:
+with open('data/videos_depo.yml') as videos:
     videos_converted = yaml.load(videos.read())
-    VIDEOS = []
+    VIDEOS_DEPO = []
     for video in videos_converted:
-        VIDEOS.append(
+        VIDEOS_DEPO.append(
+            namedtuple('Videos', video.keys())(**video)
+        )
+
+with open('data/videos_dojos.yml') as videos:
+    videos_converted = yaml.load(videos.read())
+    VIDEOS_DOJOS = []
+    for video in videos_converted:
+        VIDEOS_DOJOS.append(
+            namedtuple('Videos', video.keys())(**video)
+        )
+
+with open('data/videos_talks.yml') as videos:
+    videos_converted = yaml.load(videos.read())
+    VIDEOS_TALKS = []
+    for video in videos_converted:
+        VIDEOS_TALKS.append(
+            namedtuple('Videos', video.keys())(**video)
+        )
+
+with open('data/videos_tutorials.yml') as videos:
+    videos_converted = yaml.load(videos.read())
+    VIDEOS_TUTORIALS = []
+    for video in videos_converted:
+        VIDEOS_TUTORIALS.append(
             namedtuple('Videos', video.keys())(**video)
         )
 
@@ -109,6 +151,14 @@ with open('data/talks.yml') as talks:
     for talk in talks_readed:
         TALKS.append(
             namedtuple('Talks', talk.keys())(**talk)
+        )
+
+with open('data/materials.yml') as materials:
+    materials_readed = yaml.load(materials.read())
+    MATERIALS = []
+    for materials in materials_readed:
+        MATERIALS.append(
+            namedtuple('Materials', materials.keys())(**materials)
         )
 
 PLUGIN_PATHS = ['plugins']

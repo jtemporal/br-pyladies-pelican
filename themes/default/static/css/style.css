@@ -144,11 +144,11 @@ html, body {
 }
 
 .locations-grid .social-icons {
-  margin: 10px;
+  margin: 7px;
 }
 
 .location-name {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .location-external-link {
@@ -231,10 +231,36 @@ html, body {
   border-bottom: 1px solid #DBDBDB;
 }
 
+#videos{
+  padding-top: 35px;
+}
+
 .video {
   width: 33%;
   float: left;
 }
+
+.videos-categories {
+  min-width: 200px;
+  min-height: 148px;
+  border-left: 2px dashed #ff6696;
+  border-bottom: 2px dashed #ff6696;
+  overflow: hidden;
+  margin: 10px;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 0.3em;
+}
+
+.videos-categories a {
+  display: initial;
+}
+
+.videos-categories a:hover {
+  background-color: #ff3373 !important;
+  color: white !important;
+}
+
 .video embed {
   padding: 1%;
   float: left;
@@ -396,13 +422,6 @@ main, .notepad-share-icons, .notepad-disqus {
   margin: 0 auto;
  }
 
-@media only screen and (min-width: 45em) and (max-width: 50em) {
-  .notepad-blog-menu {
-    text-align: left;
-    width: 100%;
-  }
-}
-
  @media only screen and (max-width: 430px) {
   .notepad-site-head .notepad-site-head-menu {
     margin: 0 1.5rem;
@@ -417,11 +436,6 @@ main, .notepad-share-icons, .notepad-disqus {
       display: inline-block;
     }
 
-@media only screen and (max-width: 320px) {
-  .notepad-site-head .notepad-site-head-menu .notepad-blog-logo {
-    padding: 0;
-  }
-}
   .notepad-site-head .notepad-site-head-menu .title {
     display: inline-block;
     padding: 0;
@@ -1352,3 +1366,13 @@ img.mfp-img {
         z-index: 1;
       }
   }
+
+@media only screen and (max-width: 320px) {
+  .notepad-site-head .notepad-site-head-menu .notepad-blog-logo {
+    padding: 0;
+  }
+
+  .notepad-content .notepad-index-post .notepad-post-header .notepad-post-title {
+    font-size: 1.4rem;
+  }
+}
