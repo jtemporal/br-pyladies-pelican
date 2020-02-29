@@ -1,1 +1,1 @@
-web: python -m pelican.server
+web: python -m pelican.server $PORT
